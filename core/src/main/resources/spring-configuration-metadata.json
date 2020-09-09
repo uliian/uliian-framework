@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "framework.easy-generator.nodeId",
+      "type": "java.lang.Integer",
+      "require": true
+    },
+    {
+      "name": "framework.easy-generator.timeWait",
+      "type": "java.lang.Integer",
+      "require": true
+    }
+  ]
+}

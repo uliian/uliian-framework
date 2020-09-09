@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1/send_message?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 901206
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 100
+      minimum-idle: 3
+
+framework:
+  easy-generator:
+    nodeId: 1
+    timeWait: 1000
