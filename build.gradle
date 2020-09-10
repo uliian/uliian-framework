@@ -6,6 +6,9 @@ buildscript{
         mybatis_plus_version="3.3.2"
         global_version = '0.1.0'
         aliyun_repository = 'http://maven.aliyun.com/nexus/content/groups/public/'
+        springboot_version = '2.3.3.RELEASE'
+        kotlin_jackson_module_version='2.11.2'
+        swagger_version='3.0.0'
     }
     repositories {
         maven { url aliyun_repository }
@@ -13,16 +16,17 @@ buildscript{
 
     }
     dependencies{
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
         classpath("cz.habarta.typescript-generator:typescript-generator-gradle-plugin:$typescript_gen_version")
         classpath "cz.habarta.typescript-generator:typescript-generator-spring:$typescript_gen_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
     }
 }
-plugins {
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-}
+//plugins {
+//    id 'org.springframework.boot' version '2.3.3.RELEASE'
+//    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+//}
 
 
 
@@ -32,8 +36,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'idea'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'org.springframework.boot'
+//    apply plugin: 'io.spring.dependency-management'
 
     group = 'com.uliian'
     version = global_version
@@ -65,15 +68,16 @@ allprojects {
 
 subprojects {
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation "org.springframework.boot:spring-boot-starter-web:$springboot_version"
         implementation ('com.uliian:uliian-commons:1.5.1')
-        implementation 'org.springframework.boot:spring-boot-starter-aop'
+        implementation "org.springframework.boot:spring-boot-starter-aop:$springboot_version"
 
         api "com.google.guava:guava:$guava_version"
         api "com.baomidou:mybatis-plus-boot-starter:$mybatis_plus_version"
-        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        testImplementation("org.springframework.boot:spring-boot-starter-test:$springboot_version") {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$kotlin_jackson_module_version"
     }
 }
 

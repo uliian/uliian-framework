@@ -1,5 +1,9 @@
 package com.uliian.framework.configuration
 
+import com.uliian.framework.core.oplog.IOpLogRepository
+import com.uliian.framework.core.oplog.IUserInfoGetter
+import com.uliian.framework.defaultimpl.DefaultUserInfoGetter
+import com.uliian.framework.defaultimpl.OpLogDefaultRepository
 import com.uliian.idGenerate.EasyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -8,17 +12,17 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ComponentScan(basePackages = ["com.uliian.framework.config"])
-open class CoreStarterConfiguration() {
+@ComponentScan(basePackages = ["com.uliian.framework.core"])
+class CoreStarterConfiguration() {
     companion object{
         val log = LoggerFactory.getLogger(CoreStarterConfiguration::class.java)
     }
 
-    init {
-        log.info("test!!!")
-    }
-//
-//    @Bean
-//    @ConditionalOnMissingBean(EasyGenerator::class)
-//    fun initIDg()=EasyGenerator(1,1000)
+    @Bean
+    @ConditionalOnMissingBean(IOpLogRepository::class)
+    fun initOpLogRepository()=OpLogDefaultRepository()
+
+    @Bean
+    @ConditionalOnMissingBean(IUserInfoGetter::class)
+    fun initUserInfoGetter() = DefaultUserInfoGetter()
 }

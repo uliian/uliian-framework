@@ -9,8 +9,7 @@ spring:
       idle-timeout: 10000
       maximum-pool-size: 100
       minimum-idle: 3
-
 framework:
   easy-generator:
-    nodeId: 1
-    timeWait: 1000
+    node-id: 1
+    time-wait: 1000
