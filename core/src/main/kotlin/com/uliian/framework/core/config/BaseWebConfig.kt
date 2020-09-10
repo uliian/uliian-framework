@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.uliian.framework.core.convert.EnhanceStringToEnumConverterFactory
 import com.uliian.framework.core.convert.EnumDeserializer
 import com.uliian.framework.core.convert.EnumSerializer
+import com.uliian.framework.core.convert.LocalDateTimeDeserializerExt
 import org.springframework.context.annotation.Configuration
 import org.springframework.format.FormatterRegistry
 import org.springframework.http.MediaType
@@ -26,12 +27,12 @@ import java.time.format.DateTimeFormatter
 @EnableWebMvc
 @Configuration
 class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/")
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/")
-    }
+//    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/")
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/")
+//    }
 
     override fun addCorsMappings(registry: CorsRegistry) { //添加映射路径
         registry.addMapping("/**") //放行哪些原始域
@@ -51,7 +52,7 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
         simpleModule.addSerializer(kotlin.Long::class.java, ToStringSerializer.instance)
         simpleModule.addSerializer(java.lang.Long::class.java, ToStringSerializer.instance)
         simpleModule.addSerializer(LocalDateTime::class.java, LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-        simpleModule.addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+        simpleModule.addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializerExt())
 
         this.objectMapper.registerModule(simpleModule)
         val mappingJackson2HttpMessageConverter = MappingJackson2HttpMessageConverter(this.objectMapper)
