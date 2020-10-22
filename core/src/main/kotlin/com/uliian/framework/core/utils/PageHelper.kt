@@ -35,8 +35,10 @@ class OffsetPageCondition {
 class OffsetPageResult<T, R : Comparable<R>>(condition: OffsetPageCondition, result: List<T>, keySelector: (T) -> R) {
     val hasNext = result.size > condition.pageSize
     val data = if (hasNext) result.subList(0, condition.pageSize) else result
-    val offset: Any = (if (condition.orderBy == OrderType.Desc) data.map(keySelector).max() else data.map(keySelector).min())
-            ?: 0
+    val offset: R? = (if (condition.orderBy == OrderType.Desc) {
+        data.map(keySelector).maxOrNull()
+    } else data.map(keySelector).minOrNull())
+
 }
 
 class OffsetResultRsp<T>{

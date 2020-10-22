@@ -3,6 +3,7 @@ package com.uliian.framework.core.config
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator
 import com.uliian.idGenerate.EasyGenerator
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,11 +21,13 @@ class IdGeneratorConfig {
     var timeWait:Int = 360
 
     @Bean
+    @ConditionalOnMissingBean
     fun initIdGenerator(): EasyGenerator {
         return EasyGenerator(this.nodeId,this.timeWait)
     }
 
     @Bean
+    @ConditionalOnMissingBean
     fun dbIdGenerator(easyGenerator: EasyGenerator): IdentifierGenerator {
         return IdentifierGenerator { easyGenerator.newId() }
     }
