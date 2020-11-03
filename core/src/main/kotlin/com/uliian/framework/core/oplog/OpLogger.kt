@@ -35,7 +35,10 @@ class OpLogger(private val opLogRepository: IOpLogRepository, private val userIn
             }
         }
         if(idParameterIx>-1) {
-            id = joinPoint.args[idParameterIx] as String
+            id = when (joinPoint.args[idParameterIx]){
+                is String -> joinPoint.args[idParameterIx] as String
+                else -> (joinPoint.args[idParameterIx] as Any).toString()
+            }
         }
         val parameter = joinPoint.args.filterIsInstance<IOpDesc>().firstOrNull()
         if (parameter != null) {
