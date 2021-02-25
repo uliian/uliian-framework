@@ -27,16 +27,9 @@ import java.time.format.DateTimeFormatter
 @EnableWebMvc
 @Configuration
 class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
-//    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/")
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/")
-//    }
-
     override fun addCorsMappings(registry: CorsRegistry) { //添加映射路径
         registry.addMapping("/**") //放行哪些原始域
-                .allowedOrigins("*") //是否发送Cookie信息
+                .allowedOriginPatterns("*") //是否发送Cookie信息
                 .allowCredentials(true) //放行哪些原始域(请求方式)
                 .allowedMethods("GET", "POST", "PUT", "DELETE") //放行哪些原始域(头部信息)
                 .allowedHeaders("*") //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）

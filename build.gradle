@@ -3,10 +3,10 @@ buildscript {
         kotlin_version = '1.4.10'
         typescript_gen_version = '2.19.577'
         guava_version = '29.0-jre'
-        mybatis_plus_version = "3.3.2"
-        global_version = '0.1.7'
+        mybatis_plus_version = "3.4.2"
+        global_version = '1.0.1'
         aliyun_repository = 'http://maven.aliyun.com/nexus/content/groups/public/'
-        springboot_version = '2.3.3.RELEASE'
+        springboot_version = '2.4.3'
         kotlin_jackson_module_version = '2.11.2'
         swagger_version = '3.0.0'
     }
