@@ -12,7 +12,10 @@ class PageCondition {
     var pageSize = 10
 
     fun <T> toPage(): IPage<T> {
-        return Page(1, pageSize.toLong())
+        return this.toPage(false)
+    }
+    fun <T> toPage(isSearchCount:Boolean): IPage<T> {
+        return Page(1, pageSize.toLong(),isSearchCount)
     }
 }
 
