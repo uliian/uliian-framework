@@ -3,7 +3,6 @@ package com.uliian.framework.core.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.uliian.framework.core.convert.EnhanceStringToEnumConverterFactory
 import com.uliian.framework.core.convert.EnumDeserializer

@@ -11,5 +11,5 @@ spring:
       minimum-idle: 3
 framework:
   easy-generator:
-    node-id: 1
     time-wait: 1000
+    cidr: 192.168.9.0/24
