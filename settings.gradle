@@ -2,4 +2,5 @@ rootProject.name = 'framework'
 include 'core'
 include 'uliian-framework-starter'
 include 'demo'
+include 'uliian-framework-mybatis-plus-starter'
 

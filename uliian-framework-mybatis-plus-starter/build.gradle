@@ -1,0 +1,6 @@
+
+dependencies {
+    implementation("com.baomidou:mybatis-plus:mybatis-plus-latest-version")
+    implementation project(":core")
+}
+

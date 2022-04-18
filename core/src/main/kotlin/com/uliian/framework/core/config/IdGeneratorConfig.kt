@@ -6,10 +6,13 @@ import com.uliian.framework.core.utils.NetworkUtils
 import com.uliian.framework.core.utils.SubnetUtils
 import com.uliian.idGenerate.EasyGenerator
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.AutoConfigureOrder
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component
 @Configuration
 @ConfigurationProperties("framework.easy-generator")
 @Component
+@AutoConfigureOrder(0)
 class IdGeneratorConfig {
     companion object {
         val log = LoggerFactory.getLogger(IdGeneratorConfig::class.java)
@@ -29,6 +33,7 @@ class IdGeneratorConfig {
     @Bean
     @ConditionalOnMissingBean
     @Order(1)
+    @Primary
     fun initIdGenerator(): EasyGenerator {
         val nid :Int = if (this.cidr!=null){
             generateNodeIdFromCidr()
@@ -36,12 +41,6 @@ class IdGeneratorConfig {
             this.nodeId
         } ?: throw AppException(HttpStatus.INTERNAL_SERVER_ERROR,"无法生成NodeId")
         return EasyGenerator(nid, this.timeWait)
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    fun dbIdGenerator(easyGenerator: EasyGenerator): IdentifierGenerator {
-        return IdentifierGenerator { easyGenerator.newId() }
     }
 
     fun generateNodeIdFromCidr(): Int {
