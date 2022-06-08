@@ -1,4 +1,9 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  application:
+    name: demo
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://127.0.0.1/send_message?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
@@ -12,4 +17,7 @@ spring:
 framework:
   easy-generator:
     time-wait: 1000
-    cidr: 192.168.9.0/24
+    cidr: 10.0.0.0/8
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

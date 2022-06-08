@@ -1,14 +1,14 @@
 buildscript {
     ext {
-        kotlin_version = '1.4.10'
+        kotlin_version = '1.6.10'
         typescript_gen_version = '2.19.577'
-        guava_version = '29.0-jre'
+        guava_version = '31.1-jre'
         mybatis_plus_version = "3.4.2"
-        global_version = '1.0.8'
+        global_version = '1.1.0'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
-        springboot_version = '2.4.3'
-        kotlin_jackson_module_version = '2.11.2'
-        swagger_version = '3.0.0'
+        kotlin_jackson_module_version = '2.13.3'
+        swagger_version = '1.4.3'
+        springboot_version = '2.7.0'
     }
     repositories {
         maven { url aliyun_repository }
@@ -16,17 +16,18 @@ buildscript {
 
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springboot_version")
         classpath("cz.habarta.typescript-generator:typescript-generator-gradle-plugin:$typescript_gen_version")
         classpath "cz.habarta.typescript-generator:typescript-generator-spring:$typescript_gen_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
     }
 }
-//plugins {
-//    id 'org.springframework.boot' version '2.3.3.RELEASE'
-//    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-//}
+plugins {
+//    id 'org.springframework.boot' version '2.7.0.RELEASE'
+//    id("org.springframework.boot") version "2.7.0"
+//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
 
 allprojects {
     apply plugin: 'kotlin'
