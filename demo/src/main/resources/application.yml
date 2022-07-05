@@ -17,7 +17,7 @@ spring:
 framework:
   easy-generator:
     time-wait: 1000
-    cidr: 10.0.0.0/8
+    cidr: 192.168.9.0/24
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
