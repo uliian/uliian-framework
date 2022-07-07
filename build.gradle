@@ -4,7 +4,7 @@ buildscript {
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
         mybatis_plus_version = "3.4.2"
-        global_version = '1.1.1'
+        global_version = '1.1.2'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '1.4.3'

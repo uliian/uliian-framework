@@ -6,7 +6,7 @@ spring:
     name: demo
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://127.0.0.1/send_message?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1/joolun_ry?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 901206
@@ -17,7 +17,10 @@ spring:
 framework:
   easy-generator:
     time-wait: 1000
-    cidr: 10.0.0.0/8
+#    cidr: 10.0.0.0/8
+    cidr: 192.168.9.0/24
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+logging:
+  com.uliian.framework.demo.db.mapper.RoomMapper: debug
