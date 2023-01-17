@@ -6,6 +6,7 @@ import com.uliian.framework.demo.db.entity.SysRole
 import com.uliian.framework.demo.enums.TestE
 import com.uliian.framework.demo.service.RoleService
 import com.uliian.framework.mybatisplus.OffsetPageResult
+import com.uliian.framework.mybatisplus.OrderType
 import com.uliian.framework.mybatisplus.extention.offsetPage
 import com.uliian.idGenerate.EasyGenerator
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +22,7 @@ class TestController(private val idg:EasyGenerator,private val svc:RoleService){
 
     @GetMapping("")
     fun teste1(): OffsetPageResult<SysRole, Long> {
-        return this.svc.offsetPage(KtQueryWrapper(SysRole::class.java),SysRole::roleId,0,2);
+        return this.svc.offsetPage(KtQueryWrapper(SysRole::class.java),SysRole::roleId,OrderType.Desc,0,2);
 //        return idg.newId()
     }
 
