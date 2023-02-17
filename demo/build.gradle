@@ -7,6 +7,5 @@ apply plugin: 'org.springframework.boot'
 dependencies {
 //	implementation "org.springframework.boot:spring-boot-starter-web:$springboot_version"
 	implementation project(":uliian-framework-starter")
-	implementation project(":uliian-framework-mybatis-plus-starter")
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.12'
 }

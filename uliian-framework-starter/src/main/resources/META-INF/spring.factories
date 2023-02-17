@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.uliian.framework.configuration.CoreStarterConfiguration
+  com.uliian.framework.configuration.CoreStarterConfiguration,com.uliian.framework.configuration.MyBatisPlusWebConfig

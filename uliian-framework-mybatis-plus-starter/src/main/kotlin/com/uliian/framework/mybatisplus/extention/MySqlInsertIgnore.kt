@@ -12,7 +12,7 @@ import org.apache.ibatis.executor.keygen.NoKeyGenerator
 import org.apache.ibatis.mapping.MappedStatement
 
 
-class MySqlInsertIgnore : AbstractMethod() {
+class MySqlInsertIgnore(methodName: String?) : AbstractMethod(methodName) {
     override fun injectMappedStatement(
         mapperClass: Class<*>?,
         modelClass: Class<*>?,
@@ -40,7 +40,7 @@ class MySqlInsertIgnore : AbstractMethod() {
                 keyColumn = tableInfo.keyColumn
             } else {
                 if (null != tableInfo.keySequence) {
-                    keyGenerator = TableInfoHelper.genKeyGenerator(getMethod(sqlMethod), tableInfo, builderAssistant)
+                    keyGenerator = TableInfoHelper.genKeyGenerator(methodName, tableInfo, builderAssistant)
                     keyProperty = tableInfo.keyProperty
                     keyColumn = tableInfo.keyColumn
                 }

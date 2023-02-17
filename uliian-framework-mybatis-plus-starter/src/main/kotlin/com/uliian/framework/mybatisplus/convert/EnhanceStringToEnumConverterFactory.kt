@@ -1,6 +1,7 @@
-package com.uliian.framework.core.convert
+package com.uliian.framework.mybatisplus.convert
 
 import com.baomidou.mybatisplus.annotation.EnumValue
+import com.uliian.framework.core.convert.IDescribeEnum
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
 import org.springframework.util.Assert

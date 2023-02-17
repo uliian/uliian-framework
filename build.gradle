@@ -1,27 +1,32 @@
 buildscript {
     ext {
-        kotlin_version = '1.6.10'
+        kotlin_version = '1.8.0'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
         mybatis_plus_version = "3.4.2"
-        global_version = '1.1.5'
+        global_version = '1.1.6'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '1.4.3'
         springboot_version = '2.7.0'
     }
     repositories {
-        maven { url aliyun_repository }
+        mavenLocal()
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
+        maven { url "https://maven.aliyun.com/nexus/content/repositories/gradle-plugin" }
         mavenCentral()
-
+        maven { url "https://plugins.gradle.org/m2/" }
     }
+
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springboot_version")
         classpath("cz.habarta.typescript-generator:typescript-generator-gradle-plugin:$typescript_gen_version")
         classpath "cz.habarta.typescript-generator:typescript-generator-spring:$typescript_gen_version"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlin_version")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
+        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1"
     }
+
 }
 plugins {
 //    id 'org.springframework.boot' version '2.7.0.RELEASE'
@@ -35,7 +40,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'idea'
-//    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'io.spring.dependency-management'
 
     group = 'com.uliian'
     version = global_version
@@ -71,11 +76,10 @@ subprojects {
     }
     dependencies {
         api "org.springframework.boot:spring-boot-starter-web:$springboot_version"
-        api('com.uliian:uliian-commons:1.5.6')
+        api('com.uliian:uliian-commons:1.+')
         api "org.springframework.boot:spring-boot-starter-aop:$springboot_version"
 
         api "com.google.guava:guava:$guava_version"
-        api "com.baomidou:mybatis-plus-boot-starter:$mybatis_plus_version"
         testImplementation("org.springframework.boot:spring-boot-starter-test:$springboot_version") {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }

@@ -1,11 +1,10 @@
 package com.uliian.framework.configuration
 
-import com.uliian.framework.core.config.IdGeneratorConfig
 import com.uliian.framework.core.oplog.IOpLogRepository
 import com.uliian.framework.core.oplog.IUserInfoGetter
 import com.uliian.framework.defaultimpl.DefaultUserInfoGetter
 import com.uliian.framework.defaultimpl.OpLogDefaultRepository
-import com.uliian.idGenerate.EasyGenerator
+import com.uliian.framework.mybatisplus.config.IdGeneratorConfig
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.AutoConfigureOrder
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -34,6 +33,4 @@ class CoreStarterConfiguration() {
     @Bean
     @ConditionalOnMissingBean(IUserInfoGetter::class)
     fun initUserInfoGetter() = DefaultUserInfoGetter()
-
-
 }

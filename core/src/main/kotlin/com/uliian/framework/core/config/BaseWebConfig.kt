@@ -4,9 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
-import com.uliian.framework.core.convert.EnhanceStringToEnumConverterFactory
-import com.uliian.framework.core.convert.EnumDeserializer
-import com.uliian.framework.core.convert.EnumSerializer
 import com.uliian.framework.core.convert.LocalDateTimeDeserializerExt
 import org.springframework.context.annotation.Configuration
 import org.springframework.format.FormatterRegistry
@@ -16,7 +13,6 @@ import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.math.BigInteger
 import java.nio.charset.Charset
@@ -54,13 +50,5 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
         mediaTypes.add(MediaType.APPLICATION_XML)
         mappingJackson2HttpMessageConverter.supportedMediaTypes = mediaTypes
         converters.add(mappingJackson2HttpMessageConverter)
-    }
-
-    override fun addFormatters(registry: FormatterRegistry) {
-        registry.addConverterFactory(EnhanceStringToEnumConverterFactory())
-        val enumModule = SimpleModule("enum-module")
-        enumModule.addDeserializer(Enum::class.java, EnumDeserializer())
-        enumModule.addSerializer(Enum::class.java, EnumSerializer)
-        objectMapper.registerModule(enumModule)
     }
 }

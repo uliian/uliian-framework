@@ -1,9 +1,10 @@
-package com.uliian.framework.core.convert
+package com.uliian.framework.mybatisplus.convert
 
 import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
+import com.uliian.framework.core.convert.IDescribeEnum
 
 
 /**

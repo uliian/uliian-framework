@@ -1,4 +1,4 @@
-package com.uliian.framework.core.convert
+package com.uliian.framework.mybatisplus.convert
 
 import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonParser
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.BeanProperty
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer
+import com.uliian.framework.core.convert.IDescribeEnum
 import java.io.IOException
 
 /**
