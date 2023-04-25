@@ -8,6 +8,9 @@ import com.uliian.framework.mybatisplus.OffsetPageResult
 import com.uliian.framework.mybatisplus.OrderType
 import kotlin.reflect.KMutableProperty1
 
+/**
+ * 在使用时，第一页需要注意offset，在orderType = desc时，offset为max(typeof(offset)),需要在应用中自己处理好
+ */
 fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
     condition: KtQueryWrapper<T>,
     keySelect: KMutableProperty1<T, K?>,
