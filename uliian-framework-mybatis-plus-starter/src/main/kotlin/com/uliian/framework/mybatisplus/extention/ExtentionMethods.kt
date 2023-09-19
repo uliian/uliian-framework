@@ -1,5 +1,6 @@
 package com.uliian.framework.mybatisplus.extention
 
+import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.IService
@@ -46,18 +47,18 @@ fun <T : Any, K : Comparable<K>, V> OffsetPageResult<T, K>.recordMap(transform: 
     return OffsetPageResult(records, this.hasMore, this.offset)
 }
 
-fun <T, V> Page<T>.recordMap(transform: (T) -> V): Page<V> {
+fun <T, V> IPage<T>.recordMap(transform: (T) -> V): Page<V> {
     val records = this.records.map(transform)
     val result = Page<V>(this.current, this.size, this.total)
     result.records = records
     return result
 }
 
-fun <T, V> Page<T>.toAntdPage(transform: (T) -> V): AntdPage<V> {
+fun <T, V> IPage<T>.toAntdPage(transform: (T) -> V): AntdPage<V> {
     val records = this.records.map(transform)
     return AntdPage(records, true, this.total)
 }
 
-fun <T> Page<T>.toAntdPage(): AntdPage<T> {
+fun <T> IPage<T>.toAntdPage(): AntdPage<T> {
     return AntdPage(this.records, true, this.total)
 }

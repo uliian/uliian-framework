@@ -4,11 +4,11 @@ buildscript {
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
         mybatis_plus_version = "3.4.2"
-        global_version = '1.1.6'
+        global_version = '1.1.7'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '1.4.3'
-        springboot_version = '2.7.0'
+        springboot_version = '2.7.15'
     }
     repositories {
         mavenLocal()
@@ -59,8 +59,9 @@ allprojects {
 
     repositories {
         mavenLocal()
-        maven { url aliyun_repository }
         mavenCentral()
+
+        maven { url aliyun_repository }
     }
 
     dependencies {
@@ -76,7 +77,7 @@ subprojects {
     }
     dependencies {
         api "org.springframework.boot:spring-boot-starter-web:$springboot_version"
-        api('com.uliian:uliian-commons:1.5.6')
+        api('com.uliian:uliian-commons:1.5.7')
         api "org.springframework.boot:spring-boot-starter-aop:$springboot_version"
 
         api "com.google.guava:guava:$guava_version"
