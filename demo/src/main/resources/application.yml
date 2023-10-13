@@ -23,4 +23,5 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 logging:
-  com.uliian.framework.demo.db.mapper.RoomMapper: debug
+  level:
+    com.uliian.framework.demo.db.mapper.SysRoleMapper: debug

@@ -1,7 +1,7 @@
 package com.uliian.framework.demo.controller
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
-import com.uliian.framework.demo.db.entity.Room
 import com.uliian.framework.demo.db.entity.SysRole
 import com.uliian.framework.demo.enums.TestE
 import com.uliian.framework.demo.service.RoleService
@@ -22,8 +22,13 @@ class TestController(private val idg:EasyGenerator,private val svc:RoleService){
 
     @GetMapping("")
     fun teste1(): OffsetPageResult<SysRole, Long> {
-        return this.svc.offsetPage(KtQueryWrapper(SysRole::class.java),SysRole::roleId,OrderType.Desc,0,2);
-//        return idg.newId()
+//        val javaWrapper = Wrappers.lambdaQuery<SysRole>().orderByDesc(
+//            SysRole::getRoleId)
+        val ktWrapper = KtQueryWrapper(SysRole::class.java)
+//        var t = this.svc.offsetPage(javaWrapper,
+//            SysRole::roleId,OrderType.Desc,0,2);
+        val t1 = this.svc.offsetPage(ktWrapper,SysRole::roleId,OrderType.Desc,null,2);
+       return  t1
     }
 
     @GetMapping("enum")

@@ -1,6 +1,8 @@
 package com.uliian.framework.mybatisplus.extention
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper
 import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.IService
@@ -37,6 +39,36 @@ fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
         val newOffset =
             if (orderType == OrderType.Asc) records.maxOfOrNull { keySelect.call(it)!! } else records.minOfOrNull {
                 keySelect.call(it)!!
+            }
+        OffsetPageResult(records, false, newOffset)
+    }
+}
+
+fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
+    condition: LambdaQueryWrapper<T>,
+    keySelect: SFunction<T, K?>,
+    orderType: OrderType,
+    offset: K?,
+    size: Int
+): OffsetPageResult<T, K> {
+    val newCondition = if(orderType == OrderType.Desc){
+        condition.lt(offset!= null, keySelect,offset).orderByDesc(keySelect)
+    }else{
+        condition.gt(offset!= null,keySelect,offset).orderByAsc(keySelect)
+    }
+    val records = this.list(newCondition.last("limit ${size + 1}"))
+
+    return if (records.size > size) {
+        val resultRecords = records.subList(0, size)
+        val newOffset =
+            if (orderType == OrderType.Asc) resultRecords.maxOfOrNull { keySelect.apply(it)!! } else resultRecords.minOfOrNull {
+                keySelect.apply(it)!!
+            }
+        OffsetPageResult(resultRecords, true, newOffset)
+    } else {
+        val newOffset =
+            if (orderType == OrderType.Asc) records.maxOfOrNull { keySelect.apply(it)!! } else records.minOfOrNull {
+                keySelect.apply(it)!!
             }
         OffsetPageResult(records, false, newOffset)
     }
