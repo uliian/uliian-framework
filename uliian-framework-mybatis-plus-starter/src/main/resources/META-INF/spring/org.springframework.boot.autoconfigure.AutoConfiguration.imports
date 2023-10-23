@@ -1,0 +1,3 @@
+com.uliian.framework.mybatisplus.config.AutoFillHandler
+com.uliian.framework.mybatisplus.config.IdGeneratorConfig
+com.uliian.framework.mybatisplus.config.MyBatisPlusConfig

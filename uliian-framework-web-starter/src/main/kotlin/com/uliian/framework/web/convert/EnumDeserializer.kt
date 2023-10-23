@@ -1,11 +1,11 @@
 package com.uliian.framework.web.convert
 
-import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.BeanProperty
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer
+import com.uliian.framework.components.annotation.EnumProperty
 import java.io.IOException
 
 /**
@@ -36,7 +36,7 @@ class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeseria
         val enumClz = enumClass.enumConstants.map {
             it as Enum<*>
         }
-        val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumValue::class.java) }
+        val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumProperty::class.java) }
         if(enumValueField!=null){
             val filedName = enumValueField.name
             val getMethodName = filedName[0].toUpperCase() + filedName.substring(1)

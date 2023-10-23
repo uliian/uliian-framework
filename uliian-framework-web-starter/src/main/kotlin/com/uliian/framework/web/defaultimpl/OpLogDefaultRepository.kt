@@ -1,10 +1,10 @@
 package com.uliian.framework.web.defaultimpl
 
-import com.uliian.framework.core.oplog.AppOpLog
-import com.uliian.framework.core.oplog.IOpLogRepository
+import com.uliian.framework.components.oplog.AppOpLog
+import com.uliian.framework.components.oplog.IOpLogRepository
 import org.slf4j.LoggerFactory
 
-class OpLogDefaultRepository:IOpLogRepository {
+class OpLogDefaultRepository: IOpLogRepository {
     companion object{
         val LOG = LoggerFactory.getLogger(OpLogDefaultRepository::class.java)
     }
