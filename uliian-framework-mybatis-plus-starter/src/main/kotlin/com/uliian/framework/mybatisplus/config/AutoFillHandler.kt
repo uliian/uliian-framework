@@ -10,10 +10,10 @@ class AutoFillHandler : MetaObjectHandler {
     override fun insertFill(metaObject: MetaObject) {
         this.strictInsertFill(metaObject, "createTime", LocalDateTime::class.java, LocalDateTime.now())
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.java, LocalDateTime.now())
+        this.strictInsertFill(metaObject,"delFlag",Int::class.java,0)
     }
 
     override fun updateFill(metaObject: MetaObject) {
         setFieldValByName("updateTime", LocalDateTime.now(), metaObject)
-        //        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::now, LocalDateTime.class);
     }
 }

@@ -8,4 +8,5 @@ include 'core'
 include 'uliian-framework-starter'
 include 'demo'
 include 'uliian-framework-mybatis-plus-starter'
+include 'uliian-framework-web-starter'
 

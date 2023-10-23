@@ -1,3 +1,4 @@
 dependencies {
     api project(":uliian-framework-mybatis-plus-starter")
+    api "com.fasterxml.jackson.module:jackson-module-kotlin:$kotlin_jackson_module_version"
 }

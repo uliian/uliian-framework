@@ -13,6 +13,10 @@ class PageCondition {
     fun <T> toPage(isSearchCount:Boolean): IPage<T> {
         return Page(index.toLong(), pageSize.toLong(),isSearchCount)
     }
+
+    override fun toString(): String {
+        return "PageCondition(index=$index, pageSize=$pageSize)"
+    }
 }
 
 class AntdPageCondition{
