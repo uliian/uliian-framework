@@ -1,8 +1,7 @@
 package com.uliian.framework.mybatisplus.config
 
-import com.uliian.framework.core.exception.AppException
-import com.uliian.framework.core.utils.NetworkUtils
-import com.uliian.framework.core.utils.SubnetUtils
+import com.uliian.framework.mybatisplus.utils.NetworkUtils
+import com.uliian.framework.mybatisplus.utils.SubnetUtils
 import com.uliian.idGenerate.EasyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.AutoConfigureOrder
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.Order
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 @Configuration
@@ -37,7 +35,7 @@ class IdGeneratorConfig {
             generateNodeIdFromCidr()
         }else{
             this.nodeId
-        } ?: throw AppException(HttpStatus.INTERNAL_SERVER_ERROR,"无法生成NodeId")
+        } ?: throw IllegalArgumentException("无法生成NodeId")
         return EasyGenerator(nid, this.timeWait)
     }
 

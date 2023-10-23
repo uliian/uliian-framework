@@ -80,10 +80,7 @@ subprojects {
     }
     dependencies {
         api('com.uliian:uliian-commons:1.5.9')
-        api "com.google.guava:guava:$guava_version"
-        testImplementation("org.springframework.boot:spring-boot-starter-test") {
-            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        }
+//        api "com.google.guava:guava:$guava_version"
     }
 
     apply plugin: 'org.springframework.boot'
