@@ -2,7 +2,6 @@ package com.uliian.framework.web.config
 
 
 import io.swagger.v3.oas.models.Components
-import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
@@ -22,7 +21,7 @@ class SwaggerConfig {
     private val applicationName: String? = null
 
     @Bean
-    open fun springShopOpenAPI(): OpenAPI? {
+    fun springShopOpenAPI(): OpenAPI? {
         return OpenAPI()
             .components(
                 Components().addSecuritySchemes(
