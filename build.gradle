@@ -1,13 +1,15 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 buildscript {
     ext {
         kotlin_version = '1.9.10'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
         mybatis_plus_version = "3.5.4"
-        global_version = '1.2.0'
+        global_version = '2.0.1'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
         kotlin_jackson_module_version = '2.13.3'
-        swagger_version = '1.7.0'
+        swagger_version = '2.3.0'
         springboot_version = '3.1.5'
     }
     repositories {
@@ -28,20 +30,14 @@ buildscript {
     }
 }
 plugins {
-    id("org.springframework.boot") version "$springboot_version"
+    id("org.springframework.boot") version "$springboot_version" apply false
     id 'io.spring.dependency-management' version '1.1.3'
     id 'java-library'
-    id 'maven-publish'
-}
-bootJar {
-    enabled = false
+//    id 'maven-publish'
 }
 
-jar {
-    enabled = true
-}
 allprojects {
-    apply plugin: 'java'
+    apply(['plugin': 'java'])
     apply plugin: 'idea'
     apply plugin: 'kotlin'
 
@@ -82,13 +78,19 @@ subprojects {
 
     if(!project.name.contains("demo")) {
         apply from: "${project.rootDir}${File.separator}upload.gradle"
+    }else {
+        apply plugin: 'org.springframework.boot'
     }
     dependencies {
         api('com.uliian:uliian-commons:1.5.9')
     }
 
-    apply plugin: 'org.springframework.boot'
-
+//    apply plugin: 'org.springframework.boot'
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
 }
 
 
