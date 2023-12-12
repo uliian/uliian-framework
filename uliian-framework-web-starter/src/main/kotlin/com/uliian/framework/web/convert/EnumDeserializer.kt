@@ -39,7 +39,7 @@ class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeseria
         val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumProperty::class.java) }
         if(enumValueField!=null){
             val filedName = enumValueField.name
-            val getMethodName = filedName[0].toUpperCase() + filedName.substring(1)
+            val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
             val getMethod = enumClass.getMethod("get${getMethodName}")
 //            val data = getMethod.invoke(value)
             return enumClz.firstOrNull{

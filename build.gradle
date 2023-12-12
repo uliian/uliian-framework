@@ -2,11 +2,11 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     ext {
+        global_version = '2.0.2'
         kotlin_version = '1.9.10'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
         mybatis_plus_version = "3.5.4"
-        global_version = '2.0.1'
         aliyun_repository = 'https://maven.aliyun.com/nexus/content/groups/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '2.3.0'

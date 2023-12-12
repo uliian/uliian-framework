@@ -33,7 +33,7 @@ class EnhanceStringToEnumConverterFactory: ConverterFactory<String, Enum<*>> {
                 val field = it.javaClass.declaredFields.firstOrNull { it.getDeclaredAnnotation(EnumProperty::class.java)!=null }
                 if (field != null) {
                     val filedName = field.name
-                    val getMethodName = filedName[0].toUpperCase() + filedName.substring(1)
+                    val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
                     val getMethod = enumType.getMethod("get${getMethodName}")
                     return enumClz.firstOrNull{
                         getMethod.invoke(it).toString() == enumValue.toString()
