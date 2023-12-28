@@ -32,11 +32,11 @@ class GlobalExceptionHandler {
             if (errorMessage.length > 1) {
                 errorMessage = errorMessage.substring(0, errorMessage.length - 1)
             }
-            val result = ErrorResponse(ErrorCode.Normal,errorMessage)
+            val result = ErrorResponse(ErrorCode.Normal.code,errorMessage)
             return rsp.body(result)
         }
 
-        return rsp.body(ErrorResponse(ErrorCode.SystemError,ex.message?:""))
+        return rsp.body(ErrorResponse(ErrorCode.SystemError.code,ex.message?:""))
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -54,15 +54,15 @@ class GlobalExceptionHandler {
             if (errorMessage.length > 1) {
                 errorMessage = errorMessage.substring(0, errorMessage.length - 1)
             }
-            val result = ErrorResponse(ErrorCode.Normal,errorMessage)
+            val result = ErrorResponse(ErrorCode.Normal.code,errorMessage)
             return rsp.body(result)
         }
-        return rsp.body(ErrorResponse(ErrorCode.SystemError,ex.message?:""))
+        return rsp.body(ErrorResponse(ErrorCode.SystemError.code,ex.message?:""))
     }
 
     @ExceptionHandler(AppException::class)
     @ResponseBody
     fun resolveAppException(ex: AppException):ResponseEntity<ErrorResponse>{
-        return ResponseEntity.status(ex.httpStatus).body(ErrorResponse(ErrorCode.Normal,ex.message?:""))
+        return ResponseEntity.status(ex.httpStatus).body(ErrorResponse(ErrorCode.Normal.code,ex.message?:""))
     }
 }

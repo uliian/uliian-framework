@@ -1,4 +1,4 @@
-package com.uliian.framework.mybatisplus
+package com.uliian.framework.components.dto
 
 data class OffsetPageResult<T,K : Comparable<K>>(val records: List<T>, val hasMore: Boolean, val offset: K?)
 

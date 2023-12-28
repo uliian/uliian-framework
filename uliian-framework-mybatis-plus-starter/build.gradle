@@ -1,5 +1,7 @@
 
 dependencies {
     api("com.baomidou:mybatis-plus-boot-starter:$mybatis_plus_version")
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.22"
+    implementation(project(":uliian-framework-components"))
 }
 

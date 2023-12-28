@@ -1,20 +1,20 @@
 package com.uliian.framework.mybatisplus.extention
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
-import com.baomidou.mybatisplus.extension.service.IService
-import com.uliian.framework.mybatisplus.AntdPage
-import com.uliian.framework.mybatisplus.OffsetPageResult
-import com.uliian.framework.mybatisplus.OrderType
+import com.uliian.framework.components.dto.AntdPage
+import com.uliian.framework.components.dto.OffsetPageResult
+import com.uliian.framework.components.dto.OrderType
 import kotlin.reflect.KMutableProperty1
 
 /**
  * 在使用时，第一页需要注意offset，在orderType = desc时，offset为max(typeof(offset)),需要在应用中自己处理好
  */
-fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
+fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     condition: KtQueryWrapper<T>,
     keySelect: KMutableProperty1<T, K?>,
     orderType: OrderType,
@@ -26,7 +26,7 @@ fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
     }else{
         condition.gt(offset!= null,keySelect,offset).orderByAsc(keySelect)
     }
-    val records = this.list(newCondition.last("limit ${size + 1}"))
+    val records = this.selectList(newCondition.last("limit ${size + 1}"))
 
     return if (records.size > size) {
         val resultRecords = records.subList(0, size)
@@ -44,7 +44,7 @@ fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
     }
 }
 
-fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
+fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     condition: LambdaQueryWrapper<T>,
     keySelect: SFunction<T, K?>,
     orderType: OrderType,
@@ -56,7 +56,7 @@ fun <T : Any, K : Comparable<K>> IService<T>.offsetPage(
     }else{
         condition.gt(offset!= null,keySelect,offset).orderByAsc(keySelect)
     }
-    val records = this.list(newCondition.last("limit ${size + 1}"))
+    val records = this.selectList(newCondition.last("limit ${size + 1}"))
 
     return if (records.size > size) {
         val resultRecords = records.subList(0, size)
