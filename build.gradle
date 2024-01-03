@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     ext {
-        global_version = '2.1.0'
+        global_version = '2.1.1'
         kotlin_version = '1.9.10'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
