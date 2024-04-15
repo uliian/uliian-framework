@@ -1,4 +1,4 @@
-package com.uliian.framework.mybatisplus.utils
+package com.uliian.framework.components.network
 
 import java.net.Inet4Address
 import java.net.InetAddress

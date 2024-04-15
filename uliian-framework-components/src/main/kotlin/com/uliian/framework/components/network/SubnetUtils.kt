@@ -1,4 +1,4 @@
-package com.uliian.framework.mybatisplus.utils
+package com.uliian.framework.components.network
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern

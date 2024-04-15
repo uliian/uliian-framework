@@ -1,9 +1,9 @@
-package com.uliian.framework.web.convert
+package com.uliian.framework.components.convert
 
+import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
-import com.uliian.framework.components.annotation.EnumProperty
 
 
 /**
@@ -22,10 +22,10 @@ object EnumSerializer : JsonSerializer<Enum<*>>() {
         } else {
             val clazz = value::class.java
 
-            val annotationField = clazz.declaredFields.firstOrNull { it.isAnnotationPresent(EnumProperty::class.java) }
+            val annotationField = clazz.declaredFields.firstOrNull { it.isAnnotationPresent(EnumValue::class.java) }
             if (annotationField != null) {
                 val filedName = annotationField.name
-                val getMethodName = filedName[0].toUpperCase() + filedName.substring(1)
+                val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
                 val getMethod = clazz.getMethod("get${getMethodName}")
                 val data = getMethod.invoke(value)
                 gen.writeNumber(data as Int)

@@ -14,6 +14,7 @@ import kotlin.reflect.KMutableProperty1
 /**
  * 在使用时，第一页需要注意offset，在orderType = desc时，offset为max(typeof(offset)),需要在应用中自己处理好
  */
+//TODO:后续可以给到一个非兼容性优化：给offset一个默认值，当offset为null时，使用这个默认值
 fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     condition: KtQueryWrapper<T>,
     keySelect: KMutableProperty1<T, K?>,

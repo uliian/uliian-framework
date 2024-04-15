@@ -1,14 +1,14 @@
 package com.uliian.framework.web
 
+import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
-import com.uliian.framework.components.annotation.EnumProperty
-import com.uliian.framework.web.convert.EnumDeserializer
-import com.uliian.framework.web.convert.EnumSerializer
+import com.uliian.framework.components.convert.EnumDeserializer
+import com.uliian.framework.components.convert.EnumSerializer
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.assertTrue
 
-enum class Test(@EnumProperty val code: Int) {
+enum class Test(@EnumValue val code: Int) {
     E1(1),
     E2(2)
 }

@@ -1,7 +1,6 @@
 package com.uliian.framework.web.exceptionhandle
 
-import com.uliian.framework.web.convert.IDescribeEnum
-import org.springframework.http.HttpStatus
+import com.uliian.framework.components.convert.IDescribeEnum
 
 data class ErrorResponse(val code: Int, val msg:String)
 

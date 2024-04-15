@@ -1,7 +1,7 @@
 package com.uliian.framework.mybatisplus.config
 
-import com.uliian.framework.mybatisplus.utils.NetworkUtils
-import com.uliian.framework.mybatisplus.utils.SubnetUtils
+import com.uliian.framework.components.network.NetworkUtils
+import com.uliian.framework.components.network.SubnetUtils
 import com.uliian.idGenerate.EasyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.AutoConfigureOrder

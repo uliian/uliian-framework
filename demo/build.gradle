@@ -5,7 +5,7 @@
 //apply plugin: 'org.springframework.boot'
 
 dependencies {
-//	implementation "org.springframework.boot:spring-boot-starter-web:$springboot_version"
+	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation project(":uliian-framework-web-starter")
 	implementation project(":uliian-framework-mybatis-plus-starter")
 

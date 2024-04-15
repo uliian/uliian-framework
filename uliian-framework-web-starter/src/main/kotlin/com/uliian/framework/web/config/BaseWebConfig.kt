@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.uliian.framework.web.convert.EnhanceStringToEnumConverterFactory
-import com.uliian.framework.web.convert.EnumDeserializer
-import com.uliian.framework.web.convert.EnumSerializer
+import com.uliian.framework.components.convert.EnumDeserializer
+import com.uliian.framework.components.convert.EnumSerializer
 import com.uliian.framework.web.convert.LocalDateTimeDeserializerExt
 import org.springframework.context.annotation.Configuration
 import org.springframework.format.FormatterRegistry

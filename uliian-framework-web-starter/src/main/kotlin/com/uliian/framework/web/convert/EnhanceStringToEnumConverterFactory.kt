@@ -1,6 +1,7 @@
 package com.uliian.framework.web.convert
 
-import com.uliian.framework.components.annotation.EnumProperty
+import com.baomidou.mybatisplus.annotation.EnumValue
+import com.uliian.framework.components.convert.IDescribeEnum
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
 import org.springframework.util.Assert
@@ -30,7 +31,7 @@ class EnhanceStringToEnumConverterFactory: ConverterFactory<String, Enum<*>> {
 
             return enumClz.first {
                 val enum = it as Enum<*>
-                val field = it.javaClass.declaredFields.firstOrNull { it.getDeclaredAnnotation(EnumProperty::class.java)!=null }
+                val field = it.javaClass.declaredFields.firstOrNull { it.getDeclaredAnnotation(EnumValue::class.java)!=null }
                 if (field != null) {
                     val filedName = field.name
                     val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)

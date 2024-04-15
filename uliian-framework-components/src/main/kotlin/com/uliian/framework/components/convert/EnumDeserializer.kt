@@ -1,11 +1,11 @@
-package com.uliian.framework.web.convert
+package com.uliian.framework.components.convert
 
+import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.BeanProperty
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer
-import com.uliian.framework.components.annotation.EnumProperty
 import java.io.IOException
 
 /**
@@ -28,6 +28,10 @@ class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeseria
             }catch (ex: NumberFormatException){
                 throw IOException("Cant read json value '$rawValue' as a BigDecimal.")
             }
+        }else{
+            p.text?.trim()?.let {
+                return this.getEnumFromString(this.property!!.type.rawClass,it)
+            }
         }
         return null
     }
@@ -36,7 +40,7 @@ class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeseria
         val enumClz = enumClass.enumConstants.map {
             it as Enum<*>
         }
-        val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumProperty::class.java) }
+        val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumValue::class.java) }
         if(enumValueField!=null){
             val filedName = enumValueField.name
             val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
@@ -55,5 +59,12 @@ class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeseria
                 it.ordinal == value
             }
         }
+    }
+
+    private fun getEnumFromString(enumClass: Class<*>, value: String): Enum<*>? {
+        val enumClz = enumClass.enumConstants.map {
+            it as Enum<*>
+        }
+        return enumClz.firstOrNull { it.name == value }
     }
 }

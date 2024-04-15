@@ -1,6 +1,8 @@
 
 
 dependencies {
-    api "org.springframework.boot:spring-boot-starter-aop"
+    compileOnlyApi("org.springframework.boot:spring-boot-starter-aop")
+    compileOnlyApi("org.springframework.boot:spring-boot-starter-json")
+    compileOnlyApi("com.baomidou:mybatis-plus-annotation:$mybatis_plus_version")
     api "com.google.guava:guava:$guava_version"
 }
