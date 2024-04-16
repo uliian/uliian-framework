@@ -4,6 +4,7 @@ import com.uliian.framework.components.oplog.IOpLogRepository
 import com.uliian.framework.components.oplog.IUserInfoGetter
 import com.uliian.framework.web.defaultimpl.DefaultUserInfoGetter
 import com.uliian.framework.web.defaultimpl.OpLogDefaultRepository
+import com.uliian.framework.web.exceptionhandle.GlobalExceptionHandler
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.AutoConfigureOrder
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -30,4 +31,7 @@ class BizLoggerConfiguration() {
     @Bean
     @ConditionalOnMissingBean(IUserInfoGetter::class)
     fun initUserInfoGetter() = DefaultUserInfoGetter()
+
+    @Bean
+    fun initExceptionHandler() = GlobalExceptionHandler()
 }
