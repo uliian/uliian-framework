@@ -27,7 +27,7 @@ class TestController(private val idg:EasyGenerator,private val svc:RoleService){
         val ktWrapper = KtQueryWrapper(SysRole::class.java)
 //        var t = this.svc.offsetPage(javaWrapper,
 //            SysRole::roleId,OrderType.Desc,0,2);
-        val t1 = this.svc.baseMapper.offsetPage(ktWrapper,SysRole::roleId, OrderType.Desc,null,2);
+        val t1 = this.svc.baseMapper.offsetPage(ktWrapper,SysRole::roleId, OrderType.Desc,null,2,0);
        return  t1
     }
 

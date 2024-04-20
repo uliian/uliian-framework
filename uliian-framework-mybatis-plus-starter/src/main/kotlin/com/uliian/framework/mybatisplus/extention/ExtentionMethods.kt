@@ -9,18 +9,19 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.uliian.framework.components.dto.AntdPage
 import com.uliian.framework.components.dto.OffsetPageResult
 import com.uliian.framework.components.dto.OrderType
+import java.io.Serializable
 import kotlin.reflect.KMutableProperty1
 
 /**
  * 在使用时，第一页需要注意offset，在orderType = desc时，offset为max(typeof(offset)),需要在应用中自己处理好
  */
-//TODO:后续可以给到一个非兼容性优化：给offset一个默认值，当offset为null时，使用这个默认值
 fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     condition: KtQueryWrapper<T>,
     keySelect: KMutableProperty1<T, K?>,
     orderType: OrderType,
     offset: K?,
-    size: Int
+    size: Int,
+    defaultOffset: K
 ): OffsetPageResult<T, K> {
     val newCondition = if(orderType == OrderType.Desc){
         condition.lt(offset!= null, keySelect,offset).orderByDesc(keySelect)
@@ -32,9 +33,9 @@ fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     return if (records.size > size) {
         val resultRecords = records.subList(0, size)
         val newOffset =
-            if (orderType == OrderType.Asc) resultRecords.maxOfOrNull { keySelect.call(it)!! } else resultRecords.minOfOrNull {
+            (if (orderType == OrderType.Asc) resultRecords.maxOfOrNull { keySelect.call(it)!! } else resultRecords.minOfOrNull {
                 keySelect.call(it)!!
-            }
+            })?:defaultOffset
         OffsetPageResult(resultRecords, true, newOffset)
     } else {
         val newOffset =
@@ -50,7 +51,8 @@ fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     keySelect: SFunction<T, K?>,
     orderType: OrderType,
     offset: K?,
-    size: Int
+    size: Int,
+    defaultOffset: K
 ): OffsetPageResult<T, K> {
     val newCondition = if(orderType == OrderType.Desc){
         condition.lt(offset!= null, keySelect,offset).orderByDesc(keySelect)
@@ -62,9 +64,9 @@ fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     return if (records.size > size) {
         val resultRecords = records.subList(0, size)
         val newOffset =
-            if (orderType == OrderType.Asc) resultRecords.maxOfOrNull { keySelect.apply(it)!! } else resultRecords.minOfOrNull {
+            (if (orderType == OrderType.Asc) resultRecords.maxOfOrNull { keySelect.apply(it)!! } else resultRecords.minOfOrNull {
                 keySelect.apply(it)!!
-            }
+            })?:defaultOffset
         OffsetPageResult(resultRecords, true, newOffset)
     } else {
         val newOffset =
