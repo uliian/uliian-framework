@@ -35,4 +35,9 @@ class TestController(private val idg:EasyGenerator,private val svc:RoleService){
     fun ttt(e: TestE){
         println(e)
     }
+
+    @GetMapping("enum2")
+    fun ttt2(): TestE {
+       return TestE.A
+    }
 }

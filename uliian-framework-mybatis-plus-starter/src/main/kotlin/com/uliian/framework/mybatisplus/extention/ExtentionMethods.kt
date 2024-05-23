@@ -97,3 +97,7 @@ fun <T, V> IPage<T>.toAntdPage(transform: (T) -> V): AntdPage<V> {
 fun <T> IPage<T>.toAntdPage(): AntdPage<T> {
     return AntdPage(this.records, true, this.total)
 }
+
+fun <T> IPage<T>.toEmptyAntdPage():AntdPage<T>{
+    return AntdPage.emptyPage()
+}

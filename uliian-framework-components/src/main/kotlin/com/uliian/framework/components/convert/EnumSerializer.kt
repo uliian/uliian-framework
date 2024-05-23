@@ -28,7 +28,8 @@ object EnumSerializer : JsonSerializer<Enum<*>>() {
                 val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
                 val getMethod = clazz.getMethod("get${getMethodName}")
                 val data = getMethod.invoke(value)
-                gen.writeNumber(data as Int)
+                gen.writeObject(data)
+//                gen.writeNumber(data as Int)
             } else {
                 gen.writeNumber(value.ordinal)
             }
