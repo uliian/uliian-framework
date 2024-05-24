@@ -14,7 +14,7 @@ buildscript {
     }
     repositories {
         mavenLocal()
-        maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
+        maven { url aliyun_repository }
         maven { url "https://maven.aliyun.com/nexus/content/repositories/gradle-plugin" }
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
