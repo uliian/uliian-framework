@@ -2,15 +2,15 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 buildscript {
     ext {
-        global_version = '2.1.4'
+        global_version = '2.1.5'
         kotlin_version = '1.9.10'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
-        mybatis_plus_version = "3.5.4"
+        mybatis_plus_version = "3.5.6"
         aliyun_repository = 'https://maven.aliyun.com/repository/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '2.3.0'
-        springboot_version = '3.1.5'
+        springboot_version = '3.2.6'
     }
     repositories {
         mavenLocal()

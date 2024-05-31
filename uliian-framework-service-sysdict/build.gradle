@@ -1,5 +1,0 @@
-dependencies{
-    implementation(project(":uliian-framework-components"))
-    implementation(project(":uliian-framework-service-utils"))
-    implementation(project(":uliian-framework-mybatis-plus-starter"))
-}
