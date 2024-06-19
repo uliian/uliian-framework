@@ -1,8 +1,3 @@
-buildscript {
-
-}
-
-
 rootProject.name = 'framework'
 include 'demo'
 include 'uliian-framework-mybatis-plus-starter'

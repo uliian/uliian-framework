@@ -1,6 +1,6 @@
 
 dependencies {
-    compileOnlyApi("com.baomidou:mybatis-plus-boot-starter:$mybatis_plus_version")
+    compileOnlyApi("com.baomidou:mybatis-plus-spring-boot3-starter:$mybatis_plus_version")
     api "org.jetbrains.kotlin:kotlin-reflect:1.8.22"
     implementation(project(":uliian-framework-components"))
 }

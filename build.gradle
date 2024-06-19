@@ -6,7 +6,7 @@ buildscript {
         kotlin_version = '1.9.10'
         typescript_gen_version = '2.19.577'
         guava_version = '31.1-jre'
-        mybatis_plus_version = "3.5.6"
+        mybatis_plus_version = "3.5.7"
         aliyun_repository = 'https://maven.aliyun.com/repository/public/'
         kotlin_jackson_module_version = '2.13.3'
         swagger_version = '2.3.0'
@@ -14,16 +14,14 @@ buildscript {
     }
     repositories {
         mavenLocal()
-        maven { url aliyun_repository }
         maven { url "https://maven.aliyun.com/nexus/content/repositories/gradle-plugin" }
+        maven { url aliyun_repository }
         mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springboot_version")
         classpath("cz.habarta.typescript-generator:typescript-generator-gradle-plugin:$typescript_gen_version")
-        classpath "cz.habarta.typescript-generator:typescript-generator-spring:$typescript_gen_version"
         classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlin_version")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1"
@@ -35,7 +33,27 @@ plugins {
     id 'java-library'
 //    id 'maven-publish'
 }
+subprojects {
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
 
+    if(!project.name.contains("demo")) {
+        apply from: "${project.rootDir}${File.separator}upload.gradle"
+    }else {
+        apply plugin: 'org.springframework.boot'
+    }
+    dependencies {
+        api('com.uliian:uliian-commons:1.5.11')
+    }
+
+//    apply plugin: 'org.springframework.boot'
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+}
 allprojects {
     apply(['plugin': 'java'])
     apply plugin: 'idea'
@@ -70,27 +88,4 @@ allprojects {
     }
 
 }
-
-subprojects {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'java-library'
-    apply plugin: 'io.spring.dependency-management'
-
-    if(!project.name.contains("demo")) {
-        apply from: "${project.rootDir}${File.separator}upload.gradle"
-    }else {
-        apply plugin: 'org.springframework.boot'
-    }
-    dependencies {
-        api('com.uliian:uliian-commons:1.5.11')
-    }
-
-//    apply plugin: 'org.springframework.boot'
-    dependencyManagement {
-        imports {
-            mavenBom SpringBootPlugin.BOM_COORDINATES
-        }
-    }
-}
-
 

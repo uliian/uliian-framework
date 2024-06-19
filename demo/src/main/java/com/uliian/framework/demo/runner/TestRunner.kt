@@ -17,6 +17,8 @@ class TestRunner(private val mapper:SysRoleMapper) : CommandLineRunner {
         LOG.info("safeSelectBatchIds result:{}" , result.isEmpty())
         result = mapper.selectBatchIds(listOf(1,2,3))
         LOG.info("safeSelectBatchIds result size:{}" , result.size)
+        result = mapper.selectBatchIds(emptyList())
+
 
         result = mapper.selectList(KtQueryWrapper(SysRole::class.java).`in`(SysRole::roleId, emptyList<Long>()).eq(SysRole::status, "0"))
         LOG.info("selectList result size:{}" , result.size)
