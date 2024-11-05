@@ -77,11 +77,6 @@ fun <T : Any, K : Comparable<K>> BaseMapper<T>.offsetPage(
     }
 }
 
-fun <T : Any, K : Comparable<K>, V> OffsetPageResult<T, K>.recordMap(transform: (T) -> V): OffsetPageResult<V, K> {
-    val records = this.records.map(transform)
-    return OffsetPageResult(records, this.hasMore, this.offset)
-}
-
 fun <T, V> IPage<T>.recordMap(transform: (T) -> V): Page<V> {
     val records = this.records.map(transform)
     val result = Page<V>(this.current, this.size, this.total)
@@ -98,6 +93,9 @@ fun <T> IPage<T>.toAntdPage(): AntdPage<T> {
     return AntdPage(this.records, true, this.total)
 }
 
-fun <T> IPage<T>.toEmptyAntdPage():AntdPage<T>{
+@Deprecated("Instead IPage<T>.emptyAntdPage()", ReplaceWith("this.emptyAntdPage()"))
+fun <T> IPage<T>.toEmptyAntdPage() = this.emptyAntdPage()
+
+fun <T> IPage<T>.emptyAntdPage():AntdPage<T>{
     return AntdPage.emptyPage()
 }
