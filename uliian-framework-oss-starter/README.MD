@@ -19,12 +19,12 @@ implementation 'com.qiniu:qiniu-java-sdk:7.17.0'
 ```yaml
 framework:
   oss:
-    type: aliyun|tencent|qiniu
-    bucket-name: bucket
-    access-key-id: fdsafdas
-    access-key-secret: fdsafdas
-    upload-end-point: https://wwww.zzz.ccc/
-    download-end-point: https://wwww.zzz.ccc/
-    region: cn-hangzhou
-    path: "/test"
+    type: aliyun|tencent|qiniu  # 存储类型
+    bucket-name: bucket # 存储桶名称
+    access-key-id: fdsafdas   # 访问密钥ID
+    access-key-secret: fdsafdas # 访问密钥密钥
+    upload-end-point: https://wwww.zzz.ccc/ # 上传地址
+    download-end-point: https://wwww.zzz.ccc/ # 下载地址
+    region: cn-hangzhou # 区域
+    path: "/test" # controller路径
 ```
