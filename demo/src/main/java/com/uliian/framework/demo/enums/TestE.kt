@@ -6,3 +6,8 @@ enum class TestE(@EnumValue val ix:String) {
 
     A("1"),B("2"),C("3")
 }
+
+enum class TestN(@EnumValue val ix:Int){
+    A(1),B(2),C(3)
+
+}

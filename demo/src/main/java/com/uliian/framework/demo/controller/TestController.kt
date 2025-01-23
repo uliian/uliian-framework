@@ -6,11 +6,13 @@ import com.uliian.framework.components.dto.OffsetPageResult
 import com.uliian.framework.components.dto.OrderType
 import com.uliian.framework.demo.db.entity.SysRole
 import com.uliian.framework.demo.enums.TestE
+import com.uliian.framework.demo.enums.TestN
 import com.uliian.framework.demo.service.RoleService
 import com.uliian.framework.mybatisplus.extention.offsetPage
 import com.uliian.idGenerate.EasyGenerator
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -32,12 +34,12 @@ class TestController(private val idg:EasyGenerator,private val svc:RoleService){
     }
 
     @GetMapping("enum")
-    fun ttt(e: TestE){
+    fun ttt(@RequestParam e: TestE){
         println(e)
     }
 
     @GetMapping("enum2")
-    fun ttt2(): TestE {
-       return TestE.A
+    fun ttt2(n: TestN): TestN {
+       return n
     }
 }

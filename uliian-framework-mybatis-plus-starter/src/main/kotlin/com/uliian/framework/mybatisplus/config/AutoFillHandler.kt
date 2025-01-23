@@ -2,18 +2,25 @@ package com.uliian.framework.mybatisplus.config
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
 import org.apache.ibatis.reflection.MetaObject
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
 @Component
+@ConditionalOnMissingBean(MetaObjectHandler::class)
 class AutoFillHandler : MetaObjectHandler {
     override fun insertFill(metaObject: MetaObject) {
         this.strictInsertFill(metaObject, "createTime", LocalDateTime::class.java, LocalDateTime.now())
+        this.strictInsertFill(metaObject, "createdAt", LocalDateTime::class.java, LocalDateTime.now())
+
         this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.java, LocalDateTime.now())
+        this.strictInsertFill(metaObject, "updatedAt", LocalDateTime::class.java, LocalDateTime.now())
+
         this.strictInsertFill(metaObject,"delFlag",Int::class.java,0)
     }
 
     override fun updateFill(metaObject: MetaObject) {
         setFieldValByName("updateTime", LocalDateTime.now(), metaObject)
+        this.setFieldValByName( "updatedAt", LocalDateTime.now(), metaObject)
     }
 }

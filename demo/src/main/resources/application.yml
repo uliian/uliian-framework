@@ -24,6 +24,15 @@ framework:
   easy-generator:
     time-wait: 1000
     node-id: 5
+  oss:
+    type: aliyun
+    bucket-name: bucket
+    access-key-id: fdsafdas
+    access-key-secret: fdsafdas
+    upload-end-point: https://wwww.zzz.ccc/
+    download-end-point: https://wwww.zzz.ccc/
+    region: cn-hangzhou
+#    path: "/test"
 #    cidr: 10.0.0.0/8
 #    cidr: 192.168.9.0/24
 springdoc:
