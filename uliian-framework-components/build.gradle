@@ -1,8 +1,10 @@
 
 
 dependencies {
-    compileOnlyApi("org.springframework.boot:spring-boot-starter-aop")
-    compileOnlyApi("org.springframework.boot:spring-boot-starter-json")
+    compileOnlyApi("org.springframework.boot:spring-boot-starter-aspectj")
+    compileOnlyApi("org.springframework.boot:spring-boot-jackson2")
     compileOnlyApi("com.baomidou:mybatis-plus-annotation:$mybatis_plus_version")
     api "com.google.guava:guava:$guava_version"
+    testImplementation("org.springframework.boot:spring-boot-jackson2")
+    testImplementation("com.baomidou:mybatis-plus-annotation:$mybatis_plus_version")
 }

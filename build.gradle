@@ -1,16 +1,16 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
     ext {
-        global_version = '2.1.6'
-        kotlin_version = '1.9.10'
-        typescript_gen_version = '2.19.577'
+        global_version = '2.1.8'
+        kotlin_version = '2.4.21'
         guava_version = '31.1-jre'
-        mybatis_plus_version = "3.5.7"
+        mybatis_plus_version = "3.5.18.1"
         aliyun_repository = 'https://maven.aliyun.com/repository/public/'
         kotlin_jackson_module_version = '2.13.3'
-        swagger_version = '2.3.0'
-        springboot_version = '3.2.6'
+        swagger_version = '3.2.0'
+        springboot_version = '4.1.2'
     }
     repositories {
         mavenLocal()
@@ -21,22 +21,25 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springboot_version")
-        classpath("cz.habarta.typescript-generator:typescript-generator-gradle-plugin:$typescript_gen_version")
-        classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlin_version")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1"
     }
 }
 plugins {
     id("org.springframework.boot") version "$springboot_version" apply false
-    id 'io.spring.dependency-management' version '1.1.3'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java-library'
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version" apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version "$kotlin_version" apply false
+    id 'org.jetbrains.dokka' version '2.2.0' apply false
+    id 'org.jetbrains.dokka-javadoc' version '2.2.0' apply false
 //    id 'maven-publish'
 }
+def kotlinBomVersion = kotlin_version
+
 subprojects {
-    apply plugin: 'kotlin-spring'
+    apply plugin: 'org.jetbrains.kotlin.plugin.spring'
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
+    ext['kotlin.version'] = kotlinBomVersion
 
     if(!project.name.contains("demo")) {
         apply from: "${project.rootDir}${File.separator}upload.gradle"
@@ -45,6 +48,7 @@ subprojects {
     }
     dependencies {
         api('com.uliian:uliian-commons:1.5.11')
+        implementation 'org.springframework.boot:spring-boot-configuration-processor'
     }
 
 //    apply plugin: 'org.springframework.boot'
@@ -57,24 +61,27 @@ subprojects {
 allprojects {
     apply(['plugin': 'java'])
     apply plugin: 'idea'
-    apply plugin: 'kotlin'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
 
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
 
     group = 'com.uliian'
     version = global_version
-    sourceCompatibility = JavaVersion.VERSION_17
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 
     test {
         useJUnitPlatform()
     }
 
-    compileKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile).configureEach {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     repositories {
@@ -87,5 +94,31 @@ allprojects {
         testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: kotlin_version
     }
 
+}
+
+tasks.register("maven-release-ready") {
+    doLast {
+        if (!ossrhUsername || !ossrhPassword) {
+            throw new GradleException("ossrhUsername and ossrhPassword are required")
+        }
+
+        def raw = "${ossrhUsername}:${ossrhPassword}"
+        def bearerToken = java.util.Base64.getEncoder().encodeToString(raw.getBytes("UTF-8"))
+
+        def url = new URL("https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/com.uliian")
+        def connection = (HttpURLConnection) url.openConnection()
+        connection.setRequestMethod("POST")
+        connection.setRequestProperty("Authorization", "Bearer ${bearerToken}")
+        connection.setDoOutput(false)
+
+        def responseCode = connection.responseCode
+        def stream = responseCode >= 200 && responseCode < 300 ? connection.inputStream : connection.errorStream
+        def body = stream != null ? stream.getText("UTF-8") : ""
+
+        println("HTTP ${responseCode}")
+        if (body) {
+            println(body)
+        }
+    }
 }
 

@@ -1,7 +1,10 @@
 dependencies {
     compileOnly "org.springframework.boot:spring-boot-starter-web"
     compileOnly "org.springframework.boot:spring-boot-starter-validation"
+    compileOnly "org.springframework.boot:spring-boot-jackson2"
     api("org.springdoc:springdoc-openapi-starter-webmvc-ui:$swagger_version")
     api(project(":uliian-framework-components"))
-    testImplementation("com.baomidou:mybatis-plus-boot-starter:$mybatis_plus_version")
+    testImplementation("com.baomidou:mybatis-plus-spring-boot4-starter:$mybatis_plus_version")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-jackson2")
 }

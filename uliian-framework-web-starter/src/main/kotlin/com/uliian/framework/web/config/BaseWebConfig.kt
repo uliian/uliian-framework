@@ -33,7 +33,7 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
                 .allowedHeaders("*") //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
     }
 
-    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>?>) {
+    override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(StringHttpMessageConverter(Charset.forName("utf-8")))
 
         val simpleModule = SimpleModule()

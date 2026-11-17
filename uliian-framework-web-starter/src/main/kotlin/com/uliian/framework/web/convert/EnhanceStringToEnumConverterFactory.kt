@@ -5,11 +5,17 @@ import com.uliian.framework.components.convert.IDescribeEnum
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
 import org.springframework.util.Assert
+import java.lang.reflect.Field
+import java.util.concurrent.ConcurrentHashMap
 
 class EnhanceStringToEnumConverterFactory: ConverterFactory<String, Enum<*>> {
+
+    private val enumValueFieldCache = ConcurrentHashMap<Class<*>, Field?>()
+
     override fun <T : Enum<*>> getConverter(targetType: Class<T>): Converter<String, T> {
         val enumType = getEnumType(targetType) as Class<T>
-        return StringToEnumConverter(enumType)
+        @Suppress("UNCHECKED_CAST")
+        return StringToEnumConverter(enumType) as Converter<String, T>
     }
 
     private fun getEnumType(targetType: Class<*>): Class<*> {
@@ -21,39 +27,41 @@ class EnhanceStringToEnumConverterFactory: ConverterFactory<String, Enum<*>> {
         return enumType
     }
 
-    private inner class StringToEnumConverter<E : Enum<*>>(private val enumType: Class<E>) : Converter<String, E> {
+    private inner class StringToEnumConverter<E : Enum<*>>(private val enumType: Class<E>) : Converter<String, E?> {
+        private val enumConstants: List<E> = enumType.enumConstants?.map { it as E } ?: emptyList()
 
-        fun getEnumValue(enumClassName: String, enumValue: String): Any {
-            val enumClz = Class.forName(enumClassName).enumConstants.map {
-                it as Enum<*>
-            }
-
-
-            return enumClz.first {
-                val enum = it as Enum<*>
-                val field = it.javaClass.declaredFields.firstOrNull { it.getDeclaredAnnotation(EnumValue::class.java)!=null }
-                if (field != null) {
-                    val filedName = field.name
-                    val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
-                    val getMethod = enumType.getMethod("get${getMethodName}")
-                    return enumClz.firstOrNull{
-                        getMethod.invoke(it).toString() == enumValue.toString()
-                    } as Any
-                }
-                if(enum.name.equals(enumValue, ignoreCase = true)){
-                    true
-                }else {
-                    val desc = it as? IDescribeEnum<*>
-                    val ordinal = desc?.code?.toString() ?: it.ordinal.toString()
-                    ordinal == enumValue
-                }
-            }
+        private val enumValueField: Field? = enumValueFieldCache.computeIfAbsent(enumType) { clazz ->
+            clazz.declaredFields.firstOrNull { it.isAnnotationPresent(EnumValue::class.java) }
+                ?.apply { isAccessible = true }
         }
 
+        private val lookup: Map<String, E> = buildLookup()
+
         override fun convert(source: String): E? {
-            return if (source.isEmpty()) {
-                null
-            } else  getEnumValue(enumType.name, source) as? E
+            val text = source.trim()
+            if (text.isEmpty()) {
+                return null
+            }
+            val key = text.lowercase()
+            return lookup[key]
+        }
+
+        private fun buildLookup(): Map<String, E> {
+            val map = LinkedHashMap<String, E>()
+            for (constant in enumConstants) {
+                // @EnumValue annotated field
+                enumValueField?.get(constant)?.toString()?.lowercase()?.let { map.putIfAbsent(it, constant) }
+
+                // enum name (case-insensitive)
+                map.putIfAbsent(constant.name.lowercase(), constant)
+
+                // IDescribeEnum code
+                (constant as? IDescribeEnum<*>)?.code?.toString()?.lowercase()?.let { map.putIfAbsent(it, constant) }
+
+                // ordinal fallback
+                map.putIfAbsent(constant.ordinal.toString(), constant)
+            }
+            return map
         }
     }
 

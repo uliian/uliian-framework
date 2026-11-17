@@ -12,7 +12,7 @@ class TestRunner(private val mapper:SysRoleMapper) : CommandLineRunner {
     companion object {
         val LOG = LoggerFactory.getLogger(TestRunner::class.java)
     }
-    override fun run(vararg args: String?) {
+    override fun run(vararg args: String) {
         var result = mapper.selectBatchIds(emptyList())
         LOG.info("safeSelectBatchIds result:{}" , result.isEmpty())
         result = mapper.selectBatchIds(listOf(1,2,3))

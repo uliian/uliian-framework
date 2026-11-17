@@ -1,6 +1,6 @@
 package com.uliian.framework.demo.service
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl
 import com.uliian.framework.demo.db.entity.Room
 import com.uliian.framework.demo.db.entity.SysRole
 import com.uliian.framework.demo.db.mapper.RoomMapper
