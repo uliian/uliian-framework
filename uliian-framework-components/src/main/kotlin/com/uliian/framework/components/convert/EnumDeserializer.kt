@@ -1,70 +1,57 @@
 package com.uliian.framework.components.convert
 
-import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.databind.BeanProperty
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer
-import java.io.IOException
 
 /**
  * Created with IntelliJ IDEA.
  * @author Anders Xiao
  * @date 2019-10-15
  */
-class EnumDeserializer(private val property: BeanProperty? = null) : JsonDeserializer<Enum<*>>(), ContextualDeserializer {
+class EnumDeserializer(
+    private val enumClass: Class<out Enum<*>>? = null
+) : JsonDeserializer<Enum<*>>(), ContextualDeserializer {
 
-    override fun createContextual(ctxt: DeserializationContext?, property: BeanProperty?): JsonDeserializer<*> {
-        return EnumDeserializer(property)
+    override fun createContextual(ctxt: DeserializationContext, property: BeanProperty?): JsonDeserializer<*> {
+        val rawClass = sequenceOf(ctxt.contextualType, property?.type)
+            .filterNotNull()
+            .map { it.rawClass }
+            .firstOrNull { it.isEnum }
+            ?: throw JsonMappingException.from(
+                ctxt.parser,
+                "Cannot determine enum type for ${property?.name ?: "root value"}"
+            )
+
+        @Suppress("UNCHECKED_CAST")
+        return EnumDeserializer(rawClass as Class<out Enum<*>>)
     }
 
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): Enum<*>? {
-        val rawValue = p.text?.trim()?.toIntOrNull()
-        if(rawValue != null){
-            try {
-                val clazz = if(ctxt.contextualType != null) ctxt.contextualType.rawClass else this.property!!.type.rawClass
-                return this.getEnumFromNumber(clazz, rawValue)
-            }catch (ex: NumberFormatException){
-                throw IOException("Cant read json value '$rawValue' as a BigDecimal.")
-            }
-        }else{
-            p.text?.trim()?.let {
-                return this.getEnumFromString(this.property!!.type.rawClass,it)
-            }
-        }
-        return null
-    }
-
-    private fun getEnumFromNumber (enumClass:Class<*>, value:Number): Enum<*>? {
-        val enumClz = enumClass.enumConstants.map {
-            it as Enum<*>
-        }
-        val enumValueField = enumClass.declaredFields.firstOrNull {it.isAnnotationPresent(EnumValue::class.java) }
-        if(enumValueField!=null){
-            val filedName = enumValueField.name
-            val getMethodName = filedName[0].uppercaseChar() + filedName.substring(1)
-            val getMethod = enumClass.getMethod("get${getMethodName}")
-//            val data = getMethod.invoke(value)
-            return enumClz.firstOrNull{
-                getMethod.invoke(it).toString() == value.toString()
-            }
+        val targetClass = enumClass ?: contextualEnumClass(ctxt)
+        val rawValue: Any = when (p.currentToken()) {
+            JsonToken.VALUE_STRING -> p.text.trim().also { if (it.isEmpty()) return null }
+            JsonToken.VALUE_NUMBER_INT, JsonToken.VALUE_NUMBER_FLOAT -> p.numberValue
+            else -> return ctxt.handleUnexpectedToken(targetClass, p) as Enum<*>?
         }
 
-        return enumClz.firstOrNull {
-            val desc = (it as? IDescribeEnum<*>)
-            if(desc != null){
-                it.code.toInt() == value
-            }else {
-                it.ordinal == value
-            }
+        return EnumCodec.resolve(targetClass, rawValue) ?: when (rawValue) {
+            is Number -> throw ctxt.weirdNumberException(rawValue, targetClass, invalidValueMessage(targetClass, rawValue))
+            else -> throw ctxt.weirdStringException(rawValue.toString(), targetClass, invalidValueMessage(targetClass, rawValue))
         }
     }
 
-    private fun getEnumFromString(enumClass: Class<*>, value: String): Enum<*>? {
-        val enumClz = enumClass.enumConstants.map {
-            it as Enum<*>
-        }
-        return enumClz.firstOrNull { it.name == value }
+    @Suppress("UNCHECKED_CAST")
+    private fun contextualEnumClass(ctxt: DeserializationContext): Class<out Enum<*>> {
+        val rawClass = ctxt.contextualType?.rawClass
+        require(rawClass?.isEnum == true) { "Cannot determine enum type from Jackson context" }
+        return rawClass as Class<out Enum<*>>
     }
+
+    private fun invalidValueMessage(enumClass: Class<out Enum<*>>, rawValue: Any): String =
+        "Value '$rawValue' is not valid for ${enumClass.name}; accepted values: ${EnumCodec.acceptedValues(enumClass)}"
 }

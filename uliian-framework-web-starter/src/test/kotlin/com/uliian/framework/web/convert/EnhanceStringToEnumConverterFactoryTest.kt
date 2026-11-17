@@ -3,6 +3,7 @@ package com.uliian.framework.web.convert
 import com.baomidou.mybatisplus.annotation.EnumValue
 import com.uliian.framework.components.convert.IDescribeEnum
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 private val factory = EnhanceStringToEnumConverterFactory()
@@ -53,5 +54,14 @@ class EnhanceStringToEnumConverterFactoryTest {
     fun `returns null for blank input`() {
         val converter = factory.getConverter(PlainEnum::class.java)
         assertEquals(null, converter.convert("   "))
+    }
+
+    @Test
+    fun `rejects unknown values with accepted values`() {
+        val converter = factory.getConverter(AnnotatedString::class.java)
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            converter.convert("missing")
+        }
+        assertEquals(true, exception.message!!.contains("accepted values: [a1, b2, alpha, beta, 0, 1]"))
     }
 }

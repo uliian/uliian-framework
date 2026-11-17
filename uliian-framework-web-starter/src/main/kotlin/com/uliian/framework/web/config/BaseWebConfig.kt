@@ -1,6 +1,7 @@
 package com.uliian.framework.web.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
@@ -9,6 +10,7 @@ import com.uliian.framework.components.convert.EnumDeserializer
 import com.uliian.framework.components.convert.EnumSerializer
 import com.uliian.framework.web.convert.LocalDateTimeDeserializerExt
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Bean
 import org.springframework.format.FormatterRegistry
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter
@@ -57,9 +59,13 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
 
     override fun addFormatters(registry: FormatterRegistry) {
         registry.addConverterFactory(EnhanceStringToEnumConverterFactory())
+    }
+
+    @Bean
+    fun enumJacksonModule(): Module {
         val enumModule = SimpleModule("enum-module")
         enumModule.addDeserializer(Enum::class.java, EnumDeserializer())
         enumModule.addSerializer(Enum::class.java, EnumSerializer)
-        objectMapper.registerModule(enumModule)
+        return enumModule
     }
 }
