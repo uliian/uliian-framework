@@ -1,6 +1,8 @@
 package com.uliian.framework.demo.enums
 
 import com.baomidou.mybatisplus.annotation.EnumValue
+import com.uliian.framework.components.staticdictionary.StaticDictionary
+import com.uliian.framework.components.staticdictionary.StaticDictionaryItem
 
 enum class TestE(@EnumValue val ix:String) {
 

@@ -9,6 +9,7 @@ import com.uliian.framework.web.convert.EnhanceStringToEnumConverterFactory
 import com.uliian.framework.components.convert.EnumDeserializer
 import com.uliian.framework.components.convert.EnumSerializer
 import com.uliian.framework.web.convert.LocalDateTimeDeserializerExt
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Bean
 import org.springframework.format.FormatterRegistry
@@ -26,7 +27,7 @@ import java.time.format.DateTimeFormatter
 
 @EnableWebMvc
 @Configuration
-class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
+class BaseWebConfig(private val objectMapperProvider: ObjectProvider<ObjectMapper>) : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) { //添加映射路径
         registry.addMapping("/**") //放行哪些原始域
                 .allowedOriginPatterns("*") //是否发送Cookie信息
@@ -36,6 +37,7 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
     }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
+        val objectMapper = objectMapperProvider.getObject()
         converters.add(StringHttpMessageConverter(Charset.forName("utf-8")))
 
         val simpleModule = SimpleModule()
@@ -47,8 +49,8 @@ class BaseWebConfig(private val objectMapper: ObjectMapper) : WebMvcConfigurer {
         simpleModule.addSerializer(LocalDateTime::class.java, LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
         simpleModule.addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializerExt())
 
-        this.objectMapper.registerModule(simpleModule)
-        val mappingJackson2HttpMessageConverter = MappingJackson2HttpMessageConverter(this.objectMapper)
+        objectMapper.registerModule(simpleModule)
+        val mappingJackson2HttpMessageConverter = MappingJackson2HttpMessageConverter(objectMapper)
         val supportedMediaTypes = mappingJackson2HttpMessageConverter.supportedMediaTypes
         //        supportedMediaTypes.add(MediaType.APPLICATION_XML);
         val mediaTypes = ArrayList(supportedMediaTypes)
