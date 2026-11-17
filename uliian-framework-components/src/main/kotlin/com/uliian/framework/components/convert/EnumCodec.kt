@@ -1,6 +1,7 @@
 package com.uliian.framework.components.convert
 
 import com.baomidou.mybatisplus.annotation.EnumValue
+import com.uliian.framework.components.staticdictionary.StaticDictionaryItem
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
@@ -37,6 +38,7 @@ object EnumCodec {
 
         val serializedValues = constants.associateWith { constant ->
             when {
+                constant is StaticDictionaryItem -> constant.value
                 enumValueField != null -> enumValueField.get(constant)
                 constant is IDescribeEnum<*> -> constant.code
                 else -> constant.ordinal
@@ -45,9 +47,11 @@ object EnumCodec {
 
         val lookup = LinkedHashMap<String, Enum<*>>()
         addAliases(lookup, constants) { serializedValues.getValue(it) }
-        addAliases(lookup, constants) { (it as? IDescribeEnum<*>)?.code }
-        addAliases(lookup, constants) { it.name }
-        addAliases(lookup, constants) { it.ordinal }
+        if (!StaticDictionaryItem::class.java.isAssignableFrom(enumClass)) {
+            addAliases(lookup, constants) { (it as? IDescribeEnum<*>)?.code }
+            addAliases(lookup, constants) { it.name }
+            addAliases(lookup, constants) { it.ordinal }
+        }
 
         return EnumMetadata(
             enumClass = enumClass,
